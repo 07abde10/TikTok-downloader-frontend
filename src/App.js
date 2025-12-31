@@ -132,7 +132,14 @@ function App() {
               <div className="images-gallery" onScroll={handleGalleryScroll}>
                 {videoData.images?.map((img, index) => (
                   <div key={index} className={`image-container ${index === activeImageIndex ? 'active' : ''}`}>
-                    <img src={img} alt={`Image ${index + 1}`} className="gallery-img" />
+                    <img 
+                      src={img} 
+                      alt={`Image ${index + 1}`} 
+                      className="gallery-img"
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/400x600/cccccc/666666?text=Image+Not+Available';
+                      }}
+                    />
                     <button 
                       onClick={() => downloadSingleImage(img, index)} 
                       className="image-download-btn"
@@ -145,7 +152,13 @@ function App() {
             ) : (
               <>
                 {videoData.thumbnail && (
-                  <img src={videoData.thumbnail} alt="Video thumbnail" />
+                  <img 
+                    src={videoData.thumbnail} 
+                    alt="Video thumbnail"
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/400x400/cccccc/666666?text=Thumbnail+Not+Available';
+                    }}
+                  />
                 )}
                 <button onClick={handleDownload} className="download-btn">
                   Download Video
