@@ -9,6 +9,7 @@ function App() {
   const [error, setError] = useState('');
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [platform, setPlatform] = useState('tiktok');
 
   const API_BASE_URL = process.env.REACT_APP_API_URL || 
     (window.location.hostname === 'localhost' 
@@ -22,7 +23,7 @@ function App() {
     setVideoData(null);
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/tiktok/download`, {
+      const response = await axios.post(`${API_BASE_URL}/api/${platform}/download`, {
         url: url
       });
 
@@ -38,7 +39,7 @@ function App() {
 
   const downloadSingleImage = (imageUrl, index) => {
     // Use backend proxy for iOS download dialog
-    const downloadUrl = `${API_BASE_URL}/api/tiktok/download-file?video_url=${encodeURIComponent(imageUrl)}&filename=tiktok_${videoData.id}_image_${index + 1}.jpg`;
+    const downloadUrl = `${API_BASE_URL}/api/${platform}/download-file?video_url=${encodeURIComponent(imageUrl)}&filename=${platform}_${videoData.id}_image_${index + 1}.jpg`;
     
     const link = document.createElement('a');
     link.href = downloadUrl;
@@ -51,7 +52,7 @@ function App() {
   const handleDownload = async () => {
     if (!videoData?.download_url) return;
 
-    const downloadUrl = `${API_BASE_URL}/api/tiktok/download-file?video_url=${encodeURIComponent(videoData.download_url)}`;
+    const downloadUrl = `${API_BASE_URL}/api/${platform}/download-file?video_url=${encodeURIComponent(videoData.download_url)}`;
     
     const link = document.createElement('a');
     link.href = downloadUrl;
@@ -76,17 +77,37 @@ function App() {
     setActiveImageIndex(0);
   };
 
+  const handlePlatformSwitch = (newPlatform) => {
+    setPlatform(newPlatform);
+    handleReset();
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>TikTok Video Downloader</h1>
+        <div className="platform-switch">
+          <button 
+            className={`switch-btn ${platform === 'tiktok' ? 'active' : ''}`}
+            onClick={() => handlePlatformSwitch('tiktok')}
+          >
+            TikTok
+          </button>
+          <button 
+            className={`switch-btn ${platform === 'instagram' ? 'active' : ''}`}
+            onClick={() => handlePlatformSwitch('instagram')}
+          >
+            Instagram
+          </button>
+        </div>
+        
+        <h1>{platform === 'tiktok' ? 'TikTok' : 'Instagram'} Downloader</h1>
         
         <form onSubmit={handleSubmit} className="download-form">
           <input
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Paste TikTok URL here..."
+            placeholder={`Paste ${platform === 'tiktok' ? 'TikTok' : 'Instagram'} URL here...`}
             required
             disabled={loading}
           />
