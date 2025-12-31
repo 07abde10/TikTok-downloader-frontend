@@ -79,7 +79,10 @@ function App() {
 
   const handlePlatformSwitch = (newPlatform) => {
     setPlatform(newPlatform);
-    handleReset();
+    setUrl('');
+    setVideoData(null);
+    setError('');
+    setActiveImageIndex(0);
   };
 
   return (
