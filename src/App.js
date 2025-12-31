@@ -43,7 +43,7 @@ function App() {
     
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.download = `tiktok_${videoData.id}_image_${index + 1}.jpg`;
+    link.download = `${platform}_${videoData.id}_image_${index + 1}.jpg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -56,7 +56,7 @@ function App() {
     
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.download = `tiktok_${videoData.id}.mp4`;
+    link.download = `${platform}_${videoData.id}.mp4`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
