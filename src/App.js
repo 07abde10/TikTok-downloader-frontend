@@ -76,6 +76,13 @@ function App() {
       <header className="App-header">
         <h1>TikTok Downloader</h1>
         
+        {/* Ad Banner */}
+        <div className="ad-banner">
+          <div className="ad-placeholder">
+            Advertisement
+          </div>
+        </div>
+        
         <form onSubmit={handleSubmit} className="download-form">
           <input
             type="url"
@@ -126,8 +133,24 @@ function App() {
             <button onClick={handleReset} className="reset-btn">
               Download Another Video
             </button>
+            
+            {/* Ad after download */}
+            <div className="ad-banner">
+              <div className="ad-placeholder">
+                Advertisement
+              </div>
+            </div>
           </div>
         )}
+        {/* Support Section */}
+        <div className="support-section">
+          <p>Like this tool? Support the developer!</p>
+          <a href="https://ko-fi.com/yourusername" target="_blank" rel="noopener noreferrer">
+            <button className="donate-btn">
+              ☕ Buy me a coffee
+            </button>
+          </a>
+        </div>
       </header>
     </div>
   );
