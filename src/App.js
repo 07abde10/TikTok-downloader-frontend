@@ -79,7 +79,8 @@ function App() {
         {/* Ad Banner */}
         <div className="ad-banner">
           <div className="ad-placeholder">
-            Advertisement
+            {/* Replace this div with your ad code */}
+            Advertisement - Get ad code from PropellerAds
           </div>
         </div>
         
@@ -145,7 +146,7 @@ function App() {
         {/* Support Section */}
         <div className="support-section">
           <p>Like this tool? Support the developer!</p>
-          <a href="https://ko-fi.com/yourusername" target="_blank" rel="noopener noreferrer">
+          <a href="https://ko-fi.com/tiktokdownloader" target="_blank" rel="noopener noreferrer">
             <button className="donate-btn">
               ☕ Buy me a coffee
             </button>
