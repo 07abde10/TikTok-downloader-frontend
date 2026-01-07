@@ -13,6 +13,7 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
   const [showHistory, setShowHistory] = useState(false);
+  const [currentPage, setCurrentPage] = useState('main'); // 'main' or 'history'
 
   // Auto-paste from clipboard
   const handleInputFocus = async () => {
@@ -54,6 +55,11 @@ function App() {
         const newHistory = [historyItem, ...filteredHistory.slice(0, 9)];
         setHistory(newHistory);
         localStorage.setItem('downloadHistory', JSON.stringify(newHistory));
+        
+        // Auto scroll down
+        setTimeout(() => {
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }, 100);
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to process video');
@@ -84,6 +90,15 @@ function App() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    
+    // Auto scroll up and reset
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      setUrl('');
+      setVideoData(null);
+      setError('');
+      setActiveImageIndex(0);
+    }, 500);
   };
 
   const handleGalleryScroll = (e) => {
@@ -108,17 +123,16 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>TikTok Downloader</h1>
-        
-        <div className="header-buttons">
+      {currentPage === 'main' ? (
+        <header className="App-header">
           <button 
-            onClick={() => setShowHistory(!showHistory)} 
-            className="history-btn"
+            onClick={() => setCurrentPage('history')} 
+            className="history-nav-btn"
           >
-            📋 History ({history.length})
+            📋 History
           </button>
-        </div>
+          
+          <h1>TikTok Downloader</h1>
         
         <form onSubmit={handleSubmit} className="download-form">
           <input
@@ -204,13 +218,64 @@ function App() {
                 </button>
               </>
             )}
-            <button onClick={handleReset} className="reset-btn">
-              Download Another Video
-            </button>
           </div>
         )}
       </header>
+      ) : (
+        <div className="history-page">
+          <div className="history-header">
+            <button 
+              onClick={() => setCurrentPage('main')} 
+              className="back-btn"
+            >
+              ← Back
+            </button>
+            <h2>Download History</h2>
+            {history.length > 0 && (
+              <button onClick={clearHistory} className="clear-btn">
+                🗑️ Clear
+              </button>
+            )}
+          </div>
+          
+          {history.length === 0 ? (
+            <div className="empty-history">
+              <p>No downloads yet</p>
+              <button 
+                onClick={() => setCurrentPage('main')} 
+                className="start-btn"
+              >
+                Start Downloading
+              </button>
+            </div>
+          ) : (
+            <div className="history-list">
+              {history.map((item) => (
+                <div key={item.id} className="history-item">
+                  {item.thumbnail && (
+                    <img src={item.thumbnail} alt="thumb" className="history-thumb" />
+                  )}
+                  <div className="history-info">
+                    <p className="history-title">{item.title}</p>
+                    <p className="history-date">{item.date}</p>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      setUrl(item.url);
+                      setCurrentPage('main');
+                    }}
+                    className="reuse-btn"
+                  >
+                    ↻ Use
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
+  );
   );
 }
 
