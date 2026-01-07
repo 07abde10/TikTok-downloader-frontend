@@ -8,6 +8,11 @@ function App() {
   const [videoData, setVideoData] = useState(null);
   const [error, setError] = useState('');
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [history, setHistory] = useState(() => {
+    const saved = localStorage.getItem('downloadHistory');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [showHistory, setShowHistory] = useState(false);
 
   const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
@@ -24,6 +29,18 @@ function App() {
 
       if (response.data.success) {
         setVideoData(response.data.data);
+        // Add to history
+        const historyItem = {
+          id: Date.now(),
+          url: url,
+          title: response.data.data.title,
+          thumbnail: response.data.data.thumbnail,
+          type: response.data.data.type,
+          date: new Date().toLocaleDateString()
+        };
+        const newHistory = [historyItem, ...history.slice(0, 9)]; // Keep last 10
+        setHistory(newHistory);
+        localStorage.setItem('downloadHistory', JSON.stringify(newHistory));
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to process video');
@@ -76,6 +93,15 @@ function App() {
       <header className="App-header">
         <h1>TikTok Downloader</h1>
         
+        <div className="header-buttons">
+          <button 
+            onClick={() => setShowHistory(!showHistory)} 
+            className="history-btn"
+          >
+            📋 History ({history.length})
+          </button>
+        </div>
+        
         <form onSubmit={handleSubmit} className="download-form">
           <input
             type="url"
@@ -89,6 +115,35 @@ function App() {
             {loading ? 'Processing...' : 'Get Video'}
           </button>
         </form>
+
+        {showHistory && (
+          <div className="history-panel">
+            <h3>Download History</h3>
+            {history.length === 0 ? (
+              <p>No downloads yet</p>
+            ) : (
+              <div className="history-list">
+                {history.map((item) => (
+                  <div key={item.id} className="history-item">
+                    {item.thumbnail && (
+                      <img src={item.thumbnail} alt="thumb" className="history-thumb" />
+                    )}
+                    <div className="history-info">
+                      <p className="history-title">{item.title}</p>
+                      <p className="history-date">{item.date}</p>
+                    </div>
+                    <button 
+                      onClick={() => setUrl(item.url)}
+                      className="reuse-btn"
+                    >
+                      ↻
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {error && (
           <div className="error">
