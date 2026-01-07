@@ -41,7 +41,7 @@ function App() {
 
       if (response.data.success) {
         setVideoData(response.data.data);
-        // Add to history
+        // Add to history (avoid duplicates)
         const historyItem = {
           id: Date.now(),
           url: url,
@@ -50,7 +50,8 @@ function App() {
           type: response.data.data.type,
           date: new Date().toLocaleDateString()
         };
-        const newHistory = [historyItem, ...history.slice(0, 9)]; // Keep last 10
+        const filteredHistory = history.filter(item => item.url !== url);
+        const newHistory = [historyItem, ...filteredHistory.slice(0, 9)];
         setHistory(newHistory);
         localStorage.setItem('downloadHistory', JSON.stringify(newHistory));
       }
