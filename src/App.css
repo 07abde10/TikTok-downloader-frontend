@@ -326,58 +326,6 @@ h1 {
   transform: translateY(0);
 }
 
-/* Support Section */
-.support-section {
-  margin-top: 40px;
-  padding: 20px;
-  text-align: center;
-}
-
-.support-section p {
-  color: var(--text-secondary);
-  margin-bottom: 10px;
-  font-size: 14px;
-}
-
-.donate-btn {
-  background: linear-gradient(135deg, #ff5f5f 0%, #ff4757 100%);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: var(--transition);
-  text-decoration: none;
-  display: inline-block;
-}
-
-.donate-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
-}
-
-/* Ad Banner */
-.ad-banner {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
-}
-
-.ad-placeholder {
-  width: 320px;
-  height: 100px;
-  background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
-  border: 2px dashed #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  font-size: 14px;
-  border-radius: var(--border-radius);
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .App-header {
