@@ -16,15 +16,13 @@ function App() {
 
   // Auto-paste from clipboard
   const handleInputFocus = async () => {
-    if (!url) {
-      try {
-        const text = await navigator.clipboard.readText();
-        if (text && text.includes('tiktok.com')) {
-          setUrl(text);
-        }
-      } catch (err) {
-        // Ignore clipboard errors
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text && text.includes('tiktok.com')) {
+        setUrl(text);
       }
+    } catch (err) {
+      // Ignore clipboard errors
     }
   };
 
