@@ -14,6 +14,20 @@ function App() {
   });
   const [showHistory, setShowHistory] = useState(false);
 
+  // Auto-paste from clipboard
+  const handleInputFocus = async () => {
+    if (!url) {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text && text.includes('tiktok.com')) {
+          setUrl(text);
+        }
+      } catch (err) {
+        // Ignore clipboard errors
+      }
+    }
+  };
+
   const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   const handleSubmit = async (e) => {
@@ -107,6 +121,7 @@ function App() {
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
+            onFocus={handleInputFocus}
             placeholder="Paste TikTok URL here..."
             required
             disabled={loading}
