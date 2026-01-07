@@ -101,6 +101,11 @@ function App() {
     setActiveImageIndex(0);
   };
 
+  const clearHistory = () => {
+    setHistory([]);
+    localStorage.removeItem('downloadHistory');
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -132,7 +137,14 @@ function App() {
 
         {showHistory && (
           <div className="history-panel">
-            <h3>Download History</h3>
+            <div className="history-header">
+              <h3>Download History</h3>
+              {history.length > 0 && (
+                <button onClick={clearHistory} className="clear-btn">
+                  🗑️ Clear
+                </button>
+              )}
+            </div>
             {history.length === 0 ? (
               <p>No downloads yet</p>
             ) : (
