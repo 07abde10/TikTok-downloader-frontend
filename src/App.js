@@ -177,7 +177,7 @@ function App() {
                     )}
                     <div className="history-info">
                       <p className="history-title">{item.title}</p>
-                      <p className="history-author">@{item.author}</p>
+                      <p className="history-author">@{item.author || 'Unknown'}</p>
                       <p className="history-date">{item.date}</p>
                     </div>
                     <button 
@@ -265,6 +265,7 @@ function App() {
                   )}
                   <div className="history-info">
                     <p className="history-title">{item.title}</p>
+                    <p className="history-author">@{item.author || 'Unknown'}</p>
                     <p className="history-date">{item.date}</p>
                   </div>
                   <button 
