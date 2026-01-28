@@ -225,6 +225,13 @@ h1 {
   color: var(--text-primary);
 }
 
+.history-author {
+  font-size: 12px;
+  margin: 0;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
 .history-date {
   font-size: 12px;
   margin: 0;

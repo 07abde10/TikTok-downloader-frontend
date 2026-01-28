@@ -47,12 +47,13 @@ function App() {
           id: Date.now(),
           url: url,
           title: response.data.data.title,
+          author: response.data.data.author,
           thumbnail: response.data.data.thumbnail,
           type: response.data.data.type,
           date: new Date().toLocaleDateString()
         };
         const filteredHistory = history.filter(item => item.url !== url);
-        const newHistory = [historyItem, ...filteredHistory.slice(0, 9)];
+        const newHistory = [historyItem, ...filteredHistory.slice(0, 49)];
         setHistory(newHistory);
         localStorage.setItem('downloadHistory', JSON.stringify(newHistory));
         
@@ -69,11 +70,14 @@ function App() {
   };
 
   const downloadSingleImage = (imageUrl, index) => {
-    const downloadUrl = `${API_BASE_URL}/api/tiktok/download-file?video_url=${encodeURIComponent(imageUrl)}&filename=tiktok_${videoData.id}_image_${index + 1}.jpg`;
+    const author = videoData.author || 'Unknown';
+    const cleanAuthor = author.replace(/[^a-zA-Z0-9]/g, '_');
+    const filename = `${cleanAuthor}_tiktok_${videoData.id}_image_${index + 1}.jpg`;
+    const downloadUrl = `${API_BASE_URL}/api/tiktok/download-file?video_url=${encodeURIComponent(imageUrl)}&filename=${filename}`;
     
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.download = `tiktok_${videoData.id}_image_${index + 1}.jpg`;
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -82,11 +86,14 @@ function App() {
   const handleDownload = async () => {
     if (!videoData?.download_url) return;
 
-    const downloadUrl = `${API_BASE_URL}/api/tiktok/download-file?video_url=${encodeURIComponent(videoData.download_url)}`;
+    const author = videoData.author || 'Unknown';
+    const cleanAuthor = author.replace(/[^a-zA-Z0-9]/g, '_');
+    const filename = `${cleanAuthor}_tiktok_${videoData.id}.mp4`;
+    const downloadUrl = `${API_BASE_URL}/api/tiktok/download-file?video_url=${encodeURIComponent(videoData.download_url)}&filename=${filename}`;
     
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.download = `tiktok_${videoData.id}.mp4`;
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -170,6 +177,7 @@ function App() {
                     )}
                     <div className="history-info">
                       <p className="history-title">{item.title}</p>
+                      <p className="history-author">@{item.author}</p>
                       <p className="history-date">{item.date}</p>
                     </div>
                     <button 
