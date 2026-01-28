@@ -12,7 +12,6 @@ function App() {
     const saved = localStorage.getItem('downloadHistory');
     return saved ? JSON.parse(saved) : [];
   });
-  const [showHistory, setShowHistory] = useState(false);
   const [currentPage, setCurrentPage] = useState('main'); // 'main' or 'history'
 
   // Auto-paste from clipboard
@@ -116,13 +115,6 @@ function App() {
     setActiveImageIndex(newActiveIndex);
   };
 
-  const handleReset = () => {
-    setUrl('');
-    setVideoData(null);
-    setError('');
-    setActiveImageIndex(0);
-  };
-
   const clearHistory = () => {
     setHistory([]);
     localStorage.removeItem('downloadHistory');
@@ -156,42 +148,7 @@ function App() {
           </button>
         </form>
 
-        {showHistory && (
-          <div className="history-panel">
-            <div className="history-header">
-              <h3>Download History</h3>
-              {history.length > 0 && (
-                <button onClick={clearHistory} className="clear-btn">
-                  🗑️ Clear
-                </button>
-              )}
-            </div>
-            {history.length === 0 ? (
-              <p>No downloads yet</p>
-            ) : (
-              <div className="history-list">
-                {history.map((item) => (
-                  <div key={item.id} className="history-item">
-                    {item.thumbnail && (
-                      <img src={item.thumbnail} alt="thumb" className="history-thumb" />
-                    )}
-                    <div className="history-info">
-                      <p className="history-title">{item.title}</p>
-                      <p className="history-author">@{item.author || 'Unknown'}</p>
-                      <p className="history-date">{item.date}</p>
-                    </div>
-                    <button 
-                      onClick={() => setUrl(item.url)}
-                      className="reuse-btn"
-                    >
-                      ↻
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+
 
         {error && (
           <div className="error">
@@ -206,7 +163,7 @@ function App() {
               <div className="images-gallery" onScroll={handleGalleryScroll}>
                 {videoData.images?.map((img, index) => (
                   <div key={index} className={`image-container ${index === activeImageIndex ? 'active' : ''}`}>
-                    <img src={img} alt={`Image ${index + 1}`} className="gallery-img" />
+                    <img src={img} alt={`Slide ${index + 1}`} className="gallery-img" />
                     <button 
                       onClick={() => downloadSingleImage(img, index)} 
                       className="image-download-btn"
