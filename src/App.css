@@ -505,6 +505,62 @@ h1 {
   transform: translateY(0);
 }
 
+/* Profile Videos */
+.profile-videos {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  max-width: 800px;
+  width: 100%;
+}
+
+.videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.video-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  text-align: center;
+}
+
+.video-thumb {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.video-title {
+  font-size: 12px;
+  margin: 5px 0;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.download-btn-small {
+  background: var(--success-color);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  width: 100%;
+}
+
+.download-btn-small:hover {
+  background: var(--success-hover);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .App-header {

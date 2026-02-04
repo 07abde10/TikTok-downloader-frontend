@@ -156,7 +156,41 @@ function App() {
           </div>
         )}
 
-        {videoData && (
+        {videoData && videoData.type === 'profile' ? (
+          <div className="profile-videos">
+            <h3>@{videoData.author} - {videoData.videos.length} videos</h3>
+            <div className="videos-grid">
+              {videoData.videos.map((video, index) => (
+                <div key={video.id} className="video-card">
+                  {video.thumbnail && (
+                    <img src={video.thumbnail} alt="Video thumbnail" className="video-thumb" />
+                  )}
+                  <div className="video-info">
+                    <p className="video-title">{video.title}</p>
+                    <button 
+                      onClick={() => {
+                        const author = video.author || 'Unknown';
+                        const cleanAuthor = author.replace(/[^a-zA-Z0-9]/g, '_');
+                        const filename = `${cleanAuthor}_tiktok_${video.id}.mp4`;
+                        const downloadUrl = `${API_BASE_URL}/api/tiktok/download-file?video_url=${encodeURIComponent(video.download_url)}&filename=${filename}`;
+                        
+                        const link = document.createElement('a');
+                        link.href = downloadUrl;
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                      className="download-btn-small"
+                    >
+                      ↓ Download
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : videoData && (
           <div className="video-info">
             <h3>{videoData.title}</h3>
             {videoData.type === 'images' ? (
